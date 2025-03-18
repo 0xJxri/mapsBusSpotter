@@ -31,8 +31,8 @@ scrapePage(currentPosition, destination, customHour);
 async function scrapePage(currentPosition, destination, customHour) {
   try {
     const browser = await puppeteer.launch({
-      headless: false,
-      defaultViewport: false,
+      headless: true,
+      defaultViewport: { width: 1920, height: 1080 },
     });
     const page = await browser.newPage();
 
@@ -58,12 +58,6 @@ async function scrapePage(currentPosition, destination, customHour) {
 
       const inputField = ".LgGJQc";
       await page.waitForSelector(inputField, { visible: true });
-      // const inputFields = await page.$$("::-p-xpath(//input)");
-
-      // for (let i = 0; i < inputFields.length; i++) {
-      //   const value = await page.evaluate((el) => el.outerHTML, inputFields[i]);
-      //   console.log(`Input ${i}:`, value);
-      // }
 
       // clearing the input field and replacing with the custom hour given by the user
       await page.focus(inputField);
@@ -77,6 +71,9 @@ async function scrapePage(currentPosition, destination, customHour) {
     }
 
     const updatedUrl = await extractUrl(page);
+    await screenshotPage(page);
+
+    await browser.close();
     console.log(updatedUrl);
   } catch (error) {
     console.error("Something went wrong! ", error);
@@ -104,4 +101,25 @@ async function extractUrl(page) {
   return page.url();
 }
 
+async function screenshotPage(page) {
+  const busList = ".m6QErb.XiKgde";
 
+  await page.waitForSelector(busList);
+
+  // const busDataSection = await page.$(busList);
+
+  // if (busDataSection) {
+  //   await busDataSection.screenshot({
+  //     path: "bus-data-screenshot.png",
+  //   });
+  // }
+
+  await page.screenshot({
+    path: "page-screenshot.png",
+  });
+
+  console.log("Screenshot taken");
+}
+
+//TODO: endpoint screenshot and link
+//TODO: handle user input if he gives wrong hour etc.. + confirmation (might use inquirer/confirm)
