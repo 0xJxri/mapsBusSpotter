@@ -1,0 +1,25 @@
+{
+  "name": "mapsbusspotter",
+  "version": "1.0.0",
+  "description": "Project created because im lazy to search everytime the buses on googleMaps",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0xJxri/mapsBusSpotter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/0xJxri/mapsBusSpotter/issues"
+  },
+  "homepage": "https://github.com/0xJxri/mapsBusSpotter#readme",
+  "dependencies": {
+    "inquirer": "^12.5.0",
+    "puppeteer": "^24.4.0"
+  }
+}
