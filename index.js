@@ -1,4 +1,3 @@
-import { input } from "@inquirer/prompts";
 import inquirer from "inquirer";
 import puppeteer from "puppeteer";
 
@@ -58,18 +57,27 @@ async function scrapePage(currentPosition, destination, customHour) {
       await dropDownList[1].click();
 
       const inputField = ".LgGJQc";
-      await page.waitForSelector(inputField);
+      await page.waitForSelector(inputField, { visible: true });
+      // const inputFields = await page.$$("::-p-xpath(//input)");
 
+      // for (let i = 0; i < inputFields.length; i++) {
+      //   const value = await page.evaluate((el) => el.outerHTML, inputFields[i]);
+      //   console.log(`Input ${i}:`, value);
+      // }
+
+      // clearing the input field and replacing with the custom hour given by the user
       await page.focus(inputField);
       await page.keyboard.down("Control");
       await page.keyboard.press("A");
       await page.keyboard.up("Control");
       await page.keyboard.press("Backspace");
-      // clearing the input field and replacing with the custom hour given by the user
 
       await page.type(inputField, customHour);
       await page.keyboard.press("Enter");
     }
+
+    const updatedUrl = await extractUrl(page);
+    console.log(updatedUrl);
   } catch (error) {
     console.error("Something went wrong! ", error);
   }
@@ -89,3 +97,11 @@ async function removeGoogleForm(page) {
     console.error("Error occurred during page evaluation:", error);
   }
 }
+
+async function extractUrl(page) {
+  await page.waitForNavigation({ waitUntil: "load" });
+
+  return page.url();
+}
+
+
